@@ -16,4 +16,5 @@ public interface CandidateService {
     Optional<Candidate> findById(int id);
 
     Collection<Candidate> findAll();
+
 }

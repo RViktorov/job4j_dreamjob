@@ -15,4 +15,5 @@ public interface VacancyRepository {
     Optional<Vacancy> findById(int id);
 
     Collection<Vacancy> findAll();
+
 }

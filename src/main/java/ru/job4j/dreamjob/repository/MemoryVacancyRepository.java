@@ -1,5 +1,6 @@
 package ru.job4j.dreamjob.repository;
 
+import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Vacancy;
 
 import java.time.LocalDateTime;
@@ -8,9 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class MemoryVacancyRepository implements VacancyRepository{
-    private static final MemoryVacancyRepository INSTANCE = new MemoryVacancyRepository();
-
+@Repository
+public class MemoryVacancyRepository implements VacancyRepository {
     private int nextId = 1;
 
     private final Map<Integer, Vacancy> vacancies = new HashMap<>();
@@ -18,14 +18,10 @@ public class MemoryVacancyRepository implements VacancyRepository{
     private MemoryVacancyRepository() {
         save(new Vacancy(0, "Intern Java Developer", "description", LocalDateTime.now()));
         save(new Vacancy(0, "Junior Java Developer", "description", LocalDateTime.now()));
-        save(new Vacancy(0, "Junior+ Java Developer","description", LocalDateTime.now()));
+        save(new Vacancy(0, "Junior+ Java Developer", "description", LocalDateTime.now()));
         save(new Vacancy(0, "Middle Java Developer", "description", LocalDateTime.now()));
         save(new Vacancy(0, "Middle+ Java Developer", "description", LocalDateTime.now()));
         save(new Vacancy(0, "Senior Java Developer", "description", LocalDateTime.now()));
-    }
-
-    public static MemoryVacancyRepository getInstance() {
-        return INSTANCE;
     }
 
     @Override
@@ -37,7 +33,7 @@ public class MemoryVacancyRepository implements VacancyRepository{
 
     @Override
     public boolean deleteById(int id) {
-       return vacancies.remove(id)!=null;
+        return vacancies.remove(id) != null;
     }
 
     @Override
@@ -55,4 +51,5 @@ public class MemoryVacancyRepository implements VacancyRepository{
     public Collection<Vacancy> findAll() {
         return vacancies.values();
     }
+
 }

@@ -15,8 +15,11 @@ import java.time.LocalDateTime;
 @Controller
 @RequestMapping("/vacancies") /* Работать с кандидатами будем по URI /vacancies/** */
 public class VacancyController {
-    private final VacancyService vacancyService =
-            SimpleVacancyService.getInstance();
+    private final VacancyService vacancyService;
+
+    public VacancyController(VacancyService vacancyService) {
+        this.vacancyService = vacancyService;
+    }
 
     @GetMapping
     public String getAll(Model model) {
@@ -34,6 +37,7 @@ public class VacancyController {
         vacancyService.save(vacancy);
         return "redirect:/vacancies";
     }
+
     @GetMapping("/{id}")
     public String getById(Model model, @PathVariable int id) {
         var vacancyOptional = vacancyService.findById(id);
@@ -45,9 +49,6 @@ public class VacancyController {
         }
 
         Vacancy vacancy = vacancyOptional.get();
-
-        System.out.println("Название: " + vacancy.getTitle());
-        System.out.println("Дата создания: " + vacancy.getCreationDate());
 
         model.addAttribute("vacancy", vacancy);
 
