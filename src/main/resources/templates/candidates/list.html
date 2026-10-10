@@ -1,27 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="header :: header"></head>
+<head th:replace="~{header :: header}"></head>
 <body>
-<div class="container">
-    <div class="row">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Имя</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="candidate: ${candidates}">
-                <td th:text="${candidate.id}" />
-                <td th:text="${candidate.name}" />
-                <td th:text="${candidate.description}" />
-                <td th:text="${#temporals.format(candidate.creationDate, 'dd.MM.yyyy HH:mm')}" />
-            </tr>
-            </tbody>
-        </table>
-    </div>
+<div th:replace="~{fragments/navigation :: navigation}"></div>
+
+<div class="container mt-3">
+    <h3>Список кандидатов</h3>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Резюме</th>
+            <th>Дата создания</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="candidate : ${candidates}">
+            <td th:text="${candidate.id}"></td>
+
+            <td>
+                <a th:href="@{/candidates/{id}(id=${candidate.id})}"
+                   th:text="${candidate.name}">
+                </a>
+            </td>
+
+            <td th:text="${candidate.description}"></td>
+
+            <td th:text="${#temporals.format(
+                candidate.creationDate, 'dd.MM.yyyy HH:mm')}">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary"
+       th:href="@{/candidates/create}">
+        Создать кандидата
+    </a>
 </div>
-<footer th:include="footer :: footer"></footer>
+
+<footer th:replace="~{footer :: footer}"></footer>
 </body>
 </html>

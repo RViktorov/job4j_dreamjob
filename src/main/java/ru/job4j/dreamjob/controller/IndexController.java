@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @SuppressWarnings("unused")
 public class IndexController {
-    @GetMapping("/index")
+    @GetMapping({"/", "/index"})
     public String getIndex() {
         return "index";
     }

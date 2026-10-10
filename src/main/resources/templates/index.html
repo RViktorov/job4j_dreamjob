@@ -1,48 +1,60 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Главная страница</title>
-    <!-- Правильное подключение шапки (файл header.html лежит прямо в папке templates) -->
-    <th:block th:replace="~{header :: header}"></th:block>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{header :: header}"></head>
 <body>
-<div class="container">
-    <div class="row">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-            </tr>
-            </tbody>
-        </table>
+
+<div th:replace="~{fragments/navigation :: navigation}"></div>
+
+<div class="container mt-4">
+
+    <h2>Добро пожаловать в Dream Job!</h2>
+
+    <p class="lead">
+        Платформа для поиска работы и размещения резюме.
+    </p>
+
+    <div class="row mt-4">
+
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Вакансии</h5>
+
+                    <p class="card-text">
+                        Просматривайте доступные вакансии
+                        и размещайте новые предложения.
+                    </p>
+
+                    <a th:href="@{/vacancies}"
+                       class="btn btn-primary">
+                        Смотреть вакансии
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Кандидаты</h5>
+
+                    <p class="card-text">
+                        Просматривайте резюме кандидатов
+                        и добавляйте новые.
+                    </p>
+
+                    <a th:href="@{/candidates}"
+                       class="btn btn-primary">
+                        Смотреть кандидатов
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
-<!-- Правильное подключение подвала (файл footer.html лежит в папке templates/fragments) -->
 <footer th:replace="~{footer :: footer}"></footer>
+
 </body>
 </html>
