@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{header :: header}"></head>
 <body>
+
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
 <div class="container">
@@ -9,6 +10,7 @@
           th:action="@{/candidates/create}"
           method="post">
 
+        <!-- Имя кандидата -->
         <div class="mb-3">
             <label for="name" class="form-label">
                 <b>Имя кандидата</b>
@@ -21,6 +23,7 @@
                    required>
         </div>
 
+        <!-- Резюме -->
         <div class="mb-3">
             <label for="description" class="form-label">
                 <b>Резюме</b>
@@ -32,6 +35,29 @@
                       placeholder="Опишите опыт работы и навыки кандидата"></textarea>
         </div>
 
+        <!-- Выбор города -->
+        <div class="mb-3">
+            <label for="cityId" class="form-label">
+                <b>Город</b>
+            </label>
+
+            <select class="form-select"
+                    id="cityId"
+                    name="cityId"
+                    required>
+
+                <option value="" selected disabled>
+                    Выберите город
+                </option>
+
+                <option th:each="city : ${cities}"
+                        th:value="${city.id}"
+                        th:text="${city.name}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Кнопки -->
         <div class="mb-3 row">
             <div class="col-6"></div>
             <div class="col-6">
@@ -51,8 +77,10 @@
                 </div>
             </div>
         </div>
+
     </form>
 </div>
+
 <footer th:replace="~{footer :: footer}"></footer>
 </body>
 </html>

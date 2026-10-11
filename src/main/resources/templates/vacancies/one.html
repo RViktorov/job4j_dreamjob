@@ -1,35 +1,119 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="header :: header"></head>
+
+<head th:replace="~{header :: header}"></head>
+
 <body>
-<div th:replace="fragments/navigation :: navigation"></div>
+
+<div th:replace="~{fragments/navigation :: navigation}"></div>
+
 <div class="container">
-    <form class="mt-3" th:action="@{/vacancies/update}" method="post" th:object="${vacancy}">
-        <input type="hidden" name="id" th:field="*{id}">
+
+    <form class="mt-3"
+          th:action="@{/vacancies/update}"
+          method="post"
+          th:object="${vacancy}">
+
+        <!-- Идентификатор вакансии -->
+        <input type="hidden" th:field="*{id}">
+
+        <!-- Название вакансии -->
         <div class="mb-3">
-            <label for="title" class="form-label"><b>Название</b></label>
-            <input type="text" class="form-control" id="title" name="title" th:field="*{title}" placeholder="Предлагая должность, например, Ведущий Java разработчик">
+            <label for="title" class="form-label">
+                <b>Название вакансии</b>
+            </label>
+
+            <input type="text"
+                   class="form-control"
+                   id="title"
+                   th:field="*{title}"
+                   placeholder="Например, Ведущий Java разработчик"
+                   required>
         </div>
+
+        <!-- Описание вакансии -->
         <div class="mb-3">
-            <label for="description" class="form-label"><b>Описание</b></label>
-            <textarea class="form-control" id="description" name="description" th:field="*{description}" rows="25" placeholder="Опишите требования к кандидату"></textarea>
+            <label for="description" class="form-label">
+                <b>Описание</b>
+            </label>
+
+            <textarea class="form-control"
+                      id="description"
+                      th:field="*{description}"
+                      rows="15"
+                      placeholder="Опишите требования к кандидату"></textarea>
         </div>
+
+        <!-- Статус публикации -->
         <div class="form-check mb-3">
-            <input type="checkbox" name="visible" class="form-check-input" id="visible" th:field="*{visible}">
-            <label class="form-check-label" for="visible">Опубликовать</label>
+            <input type="checkbox"
+                   class="form-check-input"
+                   id="visible"
+                   th:field="*{visible}">
+
+            <label class="form-check-label" for="visible">
+                Опубликовать
+            </label>
         </div>
+
+        <!-- Выбор города -->
+        <div class="mb-3">
+            <label for="cityId" class="form-label">
+                <b>Город</b>
+            </label>
+
+            <select class="form-select"
+                    id="cityId"
+                    th:field="*{cityId}"
+                    required>
+
+                <option th:each="city : ${cities}"
+                        th:value="${city.id}"
+                        th:text="${city.name}">
+                </option>
+
+            </select>
+        </div>
+
+        <!-- Кнопки управления -->
         <div class="mb-3 row">
             <div class="col-6"></div>
+
             <div class="col-6">
                 <div class="row">
-                    <div class="col-4"><a class="btn btn-light w-100" th:href="@{/vacancies}">Отмена</a></div>
-                    <div class="col-4"><a class="btn btn-danger w-100" th:href="@{/vacancies/delete/{id}(id=${vacancy.id})}">Удалить</a></div>
-                    <div class="col-4"><button class="btn btn-success w-100" type="submit">Обновить</button></div>
+
+                    <!-- Отмена -->
+                    <div class="col-4">
+                        <a class="btn btn-light w-100"
+                           th:href="@{/vacancies}">
+                            Отмена
+                        </a>
+                    </div>
+
+                    <!-- Удаление -->
+                    <div class="col-4">
+                        <a class="btn btn-danger w-100"
+                           th:href="@{/vacancies/delete/{id}(id=${vacancy.id})}">
+                            Удалить
+                        </a>
+                    </div>
+
+                    <!-- Сохранение изменений -->
+                    <div class="col-4">
+                        <button class="btn btn-success w-100"
+                                type="submit">
+                            Обновить
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
+
     </form>
 </div>
-<footer th:include="footer :: footer"></footer>
+
+<footer th:replace="~{footer :: footer}"></footer>
+
 </body>
 </html>
