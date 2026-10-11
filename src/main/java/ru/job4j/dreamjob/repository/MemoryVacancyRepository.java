@@ -46,6 +46,7 @@ public class MemoryVacancyRepository implements VacancyRepository {
         return vacancies.remove(id) != null;
     }
 
+
     @Override
     public boolean update(Vacancy vacancy) {
         return vacancies.computeIfPresent(
@@ -54,7 +55,8 @@ public class MemoryVacancyRepository implements VacancyRepository {
                         oldVacancy.getId(),
                         vacancy.getTitle(),
                         vacancy.getDescription(),
-                        oldVacancy.getCreationDate()
+                        oldVacancy.getCreationDate(),
+                        vacancy.getVisible()
                 )
         ) != null;
     }
