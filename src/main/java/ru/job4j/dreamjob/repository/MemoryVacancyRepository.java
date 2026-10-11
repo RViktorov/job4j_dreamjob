@@ -14,51 +14,39 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Repository
 public class MemoryVacancyRepository implements VacancyRepository {
 
-    private final AtomicInteger nextId = new AtomicInteger(1);
+    private int nextId = 1;
 
-    private final ConcurrentMap<Integer, Vacancy> vacancies =
-            new ConcurrentHashMap<>();
+    private final Map<Integer, Vacancy> vacancies = new HashMap<>();
 
     public MemoryVacancyRepository() {
-        save(new Vacancy(0, "Intern Java Developer",
-                "description", LocalDateTime.now(),true,1));
-        save(new Vacancy(0, "Junior Java Developer",
-                "description", LocalDateTime.now(),true,1));
-        save(new Vacancy(0, "Junior+ Java Developer",
-                "description", LocalDateTime.now(),true,1));
-        save(new Vacancy(0, "Middle Java Developer",
-                "description", LocalDateTime.now(),true,1));
-        save(new Vacancy(0, "Middle+ Java Developer",
-                "description", LocalDateTime.now(),true,1));
-        save(new Vacancy(0, "Senior Java Developer",
-                "description", LocalDateTime.now(),true,1));
+        save(new Vacancy(0, "Intern Java Developer", "Стажер Java разработчик", LocalDateTime.now(), true, 1, 0));
+        save(new Vacancy(0, "Junior Java Developer", "Младший Java разработчик", LocalDateTime.now(), true, 1, 0));
+        save(new Vacancy(0, "Junior+ Java Developer", "Java разработчик", LocalDateTime.now(), true, 2, 0));
+        save(new Vacancy(0, "Middle Java Developer", "Старший Java разработчик", LocalDateTime.now(), true, 2, 0));
+        save(new Vacancy(0, "Middle+ Java Developer", "Ведущий Java разработчик", LocalDateTime.now(), true, 2, 0));
+        save(new Vacancy(0, "Senior Java Developer", "Главный Java разработчик", LocalDateTime.now(), true, 3, 0));
     }
 
     @Override
     public Vacancy save(Vacancy vacancy) {
-        vacancy.setId(nextId.getAndIncrement());
+        vacancy.setId(nextId++);
         vacancies.put(vacancy.getId(), vacancy);
         return vacancy;
     }
 
     @Override
     public boolean deleteById(int id) {
-        return vacancies.remove(id) != null;
+     return    vacancies.remove(id) !=null;
     }
-
 
     @Override
     public boolean update(Vacancy vacancy) {
-        return vacancies.computeIfPresent(vacancy.getId(), (id, oldVacancy) ->
-                new Vacancy(
-                        oldVacancy.getId(),
-                        vacancy.getTitle(),
-                        vacancy.getDescription(),
-                        oldVacancy.getCreationDate(),
-                        vacancy.getVisible(),
-                        vacancy.getCityId()
-                )
-        ) != null;
+        return vacancies.computeIfPresent(vacancy.getId(), (id, oldVacancy) -> {
+            return new Vacancy(
+                    oldVacancy.getId(), vacancy.getTitle(), vacancy.getDescription(),
+                    vacancy.getCreationDate(), vacancy.getVisible(), vacancy.getCityId(), vacancy.getFileId()
+            );
+        }) != null;
     }
 
     @Override
@@ -68,6 +56,6 @@ public class MemoryVacancyRepository implements VacancyRepository {
 
     @Override
     public Collection<Vacancy> findAll() {
-        return new ArrayList<>(vacancies.values());
+        return vacancies.values();
     }
 }

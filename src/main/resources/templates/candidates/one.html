@@ -1,103 +1,151 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="~{header :: header}"></head>
+
 <body>
 
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
-<div class="container">
-    <form class="mt-3"
-          th:action="@{/candidates/update}"
-          method="post"
-          th:object="${candidate}">
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
 
-        <input type="hidden" th:field="*{id}">
+            <h3 class="mb-4">Редактирование резюме</h3>
 
-        <!-- Имя кандидата -->
-        <div class="mb-3">
-            <label for="name" class="form-label">
-                <b>Имя кандидата</b>
-            </label>
-            <input type="text"
-                   class="form-control"
-                   id="name"
-                   th:field="*{name}"
-                   required>
-        </div>
+            <form class="mt-3"
+                  th:action="@{/candidates/update}"
+                  method="post"
+                  th:object="${candidate}"
+                  enctype="multipart/form-data">
 
-        <!-- Дата создания -->
-        <div class="mb-3">
-            <label class="form-label">
-                <b>Дата создания резюме</b>
-            </label>
-            <p th:text="${#temporals.format(
-                candidate.creationDate, 'dd.MM.yyyy HH:mm')}">
-            </p>
-        </div>
+                <!-- Идентификатор кандидата -->
+                <input type="hidden" th:field="*{id}">
 
-        <!-- Резюме -->
-        <div class="mb-3">
-            <label for="description" class="form-label">
-                <b>Резюме</b>
-            </label>
-            <textarea class="form-control"
-                      id="description"
-                      th:field="*{description}"
-                      rows="15"></textarea>
-        </div>
+                <!-- Имя кандидата -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">
+                        <b>Имя кандидата</b>
+                    </label>
 
-        <!-- Город -->
-        <div class="mb-3">
-            <label for="cityId" class="form-label">
-                <b>Город</b>
-            </label>
+                    <input type="text"
+                           class="form-control"
+                           id="name"
+                           th:field="*{name}"
+                           required>
+                </div>
 
-            <select class="form-select"
-                    id="cityId"
-                    th:field="*{cityId}"
-                    required>
+                <!-- Дата создания резюме -->
+                <div class="mb-3">
+                    <label class="form-label">
+                        <b>Дата создания резюме</b>
+                    </label>
 
-                <option th:each="city : ${cities}"
-                        th:value="${city.id}"
-                        th:text="${city.name}">
-                </option>
-            </select>
-        </div>
+                    <p th:text="${#temporals.format(
+                        candidate.creationDate,
+                        'dd.MM.yyyy HH:mm')}">
+                    </p>
+                </div>
 
-        <!-- Кнопки -->
-        <div class="mb-3 row">
-            <div class="col-6"></div>
-            <div class="col-6">
-                <div class="row">
+                <!-- Описание резюме -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">
+                        <b>Резюме</b>
+                    </label>
 
-                    <div class="col-4">
-                        <a class="btn btn-light w-100"
-                           th:href="@{/candidates}">
-                            Отмена
+                    <textarea class="form-control"
+                              id="description"
+                              th:field="*{description}"
+                              rows="10"
+                              placeholder="Опишите опыт работы и навыки кандидата">
+                    </textarea>
+                </div>
+
+                <!-- Город -->
+                <div class="mb-3">
+                    <label for="cityId" class="form-label">
+                        <b>Город</b>
+                    </label>
+
+                    <select class="form-select"
+                            id="cityId"
+                            th:field="*{cityId}"
+                            required>
+
+                        <option th:each="city : ${cities}"
+                                th:value="${city.id}"
+                                th:text="${city.name}">
+                        </option>
+
+                    </select>
+                </div>
+
+                <!-- Текущий файл резюме -->
+                <div class="mb-3">
+                    <label class="form-label">
+                        <b>Прикреплённый файл резюме</b>
+                    </label>
+
+                    <div th:if="*{fileId != 0}">
+                        <a class="btn btn-outline-primary"
+                           th:href="@{/files/{id}(id=*{fileId})}"
+                           target="_blank">
+                            Открыть файл резюме
                         </a>
                     </div>
 
-                    <div class="col-4">
-                        <a class="btn btn-danger w-100"
-                           th:href="@{/candidates/delete/{id}(id=${candidate.id})}">
-                            Удалить
-                        </a>
+                    <div th:if="*{fileId == 0}">
+                        <span class="text-muted">
+                            Файл не прикреплён
+                        </span>
                     </div>
+                </div>
 
-                    <div class="col-4">
-                        <button class="btn btn-success w-100"
-                                type="submit">
-                            Обновить
-                        </button>
+                <!-- Загрузка нового файла -->
+                <div class="mb-3">
+                    <label for="file" class="form-label">
+                        <b>Заменить файл резюме</b>
+                    </label>
+
+                    <input type="file"
+                           class="form-control"
+                           id="file"
+                           name="file"
+                           accept=".pdf,.doc,.docx">
+
+                    <div class="form-text">
+                        Если файл не выбран, сохранится прежний.
+                        Допустимые форматы: PDF, DOC, DOCX.
                     </div>
+                </div>
+
+                <!-- Кнопки управления -->
+                <div class="d-flex justify-content-end gap-2 mt-4 mb-4">
+
+                    <a class="btn btn-secondary"
+                       th:href="@{/candidates}">
+                        Отмена
+                    </a>
+
+                    <a class="btn btn-danger"
+                       th:href="@{/candidates/delete/{id}(id=${candidate.id})}">
+                        Удалить
+                    </a>
+
+                    <button class="btn btn-success"
+                            type="submit">
+                        Обновить
+                    </button>
 
                 </div>
-            </div>
-        </div>
 
-    </form>
+            </form>
+
+        </div>
+    </div>
 </div>
 
 <footer th:replace="~{footer :: footer}"></footer>
+
 </body>
 </html>
