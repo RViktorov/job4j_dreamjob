@@ -34,6 +34,7 @@ public class Candidate {
         this.cityId = cityId;
         this.fileId = fileId;
     }
+
     public Candidate(int id, String name, String description,
                      LocalDateTime creationDate, int cityId) {
         this(id, name, description, creationDate, cityId, 0);
@@ -46,6 +47,7 @@ public class Candidate {
     public void setFileId(int fileId) {
         this.fileId = fileId;
     }
+
     public int getCityId() {
         return cityId;
     }

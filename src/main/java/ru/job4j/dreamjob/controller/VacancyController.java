@@ -24,7 +24,6 @@ public class VacancyController {
         this.cityService = cityService;
     }
 
-
     @GetMapping
     public String getAll(Model model) {
         model.addAttribute("vacancies", vacancyService.findAll());

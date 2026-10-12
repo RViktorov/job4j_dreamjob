@@ -13,7 +13,6 @@ public class SimpleCityService implements CityService {
 
     private final CityRepository cityRepository;
 
-
     public SimpleCityService(CityRepository sql2oCityRepository) {
         this.cityRepository = sql2oCityRepository;
     }
@@ -22,4 +21,5 @@ public class SimpleCityService implements CityService {
     public Collection<City> findAll() {
         return cityRepository.findAll();
     }
+
 }
