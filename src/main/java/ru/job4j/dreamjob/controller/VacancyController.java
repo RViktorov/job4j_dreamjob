@@ -37,16 +37,21 @@ public class VacancyController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute Vacancy vacancy,
-                         @RequestParam("file") MultipartFile file)
-            throws IOException {
+                         @RequestParam("file") MultipartFile file,
+                         Model model) {
+        try {
+            FileDto fileDto = new FileDto(
+                    file.getOriginalFilename(),
+                    file.getBytes()
+            );
 
-        FileDto fileDto = new FileDto(
-                file.getOriginalFilename(),
-                file.getBytes()
-        );
+            vacancyService.save(vacancy, fileDto);
 
-        vacancyService.save(vacancy, fileDto);
-        return "redirect:/vacancies";
+            return "redirect:/vacancies";
+        } catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
+            return "errors/404";
+        }
     }
 
     @GetMapping("/{id}")
